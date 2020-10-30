@@ -1,9 +1,11 @@
+import axios from 'axios';
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
 
+  
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,7 +30,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers','justsml','luishrd','bigknell' ];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -50,6 +52,87 @@ const followersArray = [];
     </div>
 */
 
+function gitHubAPI(object){
+  const div1 = document.createElement('div')
+  div1.classList.add('card')
+  
+  const img = document.createElement('img')
+  img.src =(object.avatar_url)
+  div1.appendChild(img)
+
+
+  const div2 = document.createElement('div')
+  div2.classList.add('card-info')
+  div1.appendChild(div2)
+
+  const h3 = document.createElement('h3')
+  h3.classList.add('name')
+  h3.textContent = object.name
+  div2.appendChild(h3)
+
+
+  const p1= document.createElement('p')
+  p1.classList.add('username')
+  p1.textContent = object.login
+  div2.appendChild(p1)
+
+  const p2 = document.createElement('p')
+  p2.textContent = `Location: ${object.location}`
+  div2.appendChild(p2)
+
+  const p3 = document.createElement('p')
+  p3.textContent = ('Profile:')
+  div2.appendChild(p3)
+
+  const anchorTag = document.createElement('a')
+  anchorTag.href=(object.html_url)
+  anchorTag.textContent = object.html_url
+  p3.appendChild(anchorTag)
+
+  const p4 = document.createElement('p')
+  p4.textContent = `Followers: ${object.followers}`
+  div2.appendChild(p4)
+
+  const p5 = document.createElement('p')
+  p5.textContent = `Following: ${object.following}`
+  div2.appendChild(p5)
+
+  const p6 = document.createElement('p')
+  p6.textContent = `Bio: ${object.bio}`
+  div2.appendChild(p6)
+  return div1
+
+  
+
+
+}
+
+const card = document.querySelector('.cards')
+
+
+axios
+.get('https://api.github.com/users/MaksimRaymond')
+.then((response) => {
+  const data = response.data; 
+  card.appendChild(gitHubAPI(data))
+  })
+.catch((error)=> {
+  console.log(error, "This Is Not Working"); 
+  });
+
+
+followersArray.map(item => {
+  axios
+.get(`https://api.github.com/users/${item}`)
+.then((response) => {
+  const data = response.data; 
+  card.appendChild(gitHubAPI(data))
+  })
+.catch((error)=> {
+  console.log(error, "This Is Not Working"); 
+  });
+
+})
 /*
   List of LS Instructors Github username's:
     tetondan
